@@ -76,7 +76,7 @@ class Agent():
    #Modification for n agents
     def act(self, agents_states, add_noise=True):
         """Returns actions for given state as per current policy."""
-        agents_states = torch.from_numpy(agents_state).float().to(device)
+        agents_states = torch.from_numpy(agents_states).float().to(device)
         actions = np.zeros((self.num_agents, self.action_size))
         self.actor_local.eval()
         with torch.no_grad():
