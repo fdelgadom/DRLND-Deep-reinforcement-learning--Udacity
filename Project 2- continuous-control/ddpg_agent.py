@@ -50,6 +50,7 @@ class Agent():
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
 
         # Noise process
+        # Modification noise process for n agents NO???
         self.noise = OUNoise(action_size, random_seed)
 
         # Replay memory
@@ -72,15 +73,19 @@ class Agent():
             experiences = self.memory.sample()
             self.learn(experiences, GAMMA)
             
-    def act(self, state, add_noise=True):
+   #Modification for n agents
+    def act(self, agents_states, add_noise=True):
         """Returns actions for given state as per current policy."""
-        state = torch.from_numpy(state).float().to(device)
+        agents_states = torch.from_numpy(agents_state).float().to(device)
+        actions = np.zeros((self.num_agents, self.action_size))
         self.actor_local.eval()
         with torch.no_grad():
-            action = self.actor_local(state).cpu().data.numpy()
+            for agent_num, state in enumerate(agents_states):
+                action = self.actor_local(state).cpu().data.numpy()
+                actions[agent_num, :] = action
         self.actor_local.train()
         if add_noise:
-            action += self.noise.sample()
+            actions += self.noise.sample()
         return np.clip(action, -1, 1)
 
     def reset(self):
