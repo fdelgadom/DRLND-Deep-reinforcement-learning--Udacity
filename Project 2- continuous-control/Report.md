@@ -43,7 +43,7 @@ The **Critic** is a value function, measuring the quality of the actions via 3 f
 
 ![alt text][image1]
 
-Environment solved in n episodes.
+Environment solved in 247 episodes.
 
 ## Ideas for Future Work
 
