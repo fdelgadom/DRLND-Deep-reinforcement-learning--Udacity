@@ -8,14 +8,20 @@ This project involves training a DeepRL agent to solve the Reacher Unity Environ
 
 ## Deep-learning algorithm
 The learning algorithm implemented for this project is  **Deep Deterministic Policy Gradient(DDPG)** based on both the ddpg-bipedal and ddpg-pendulum examples in the [repository from Udacity](https://github.com/udacity/deep-reinforcement-learning).
-DDPG Algorithm is defined in the paper ["Continuous Control With Deep Reinforcement Learning"](https://arxiv.org/pdf/1509.02971.pdf)
+
+DDPG Algorithm is defined in the paper ["Continuous Control With Deep Reinforcement Learning"](https://arxiv.org/pdf/1509.02971.pdf).
+
 DDPG, as described in the paper consists in "adapt the ideas underlying the success of Deep Q-Learning to the continuous action domain" by using an actor-critic framework with a replay buffer
 
 After trying to solve 1 agent version of the environment, and after consulting slack channels the consensus was that 20 agents are a far better option.
+
 So **ddpg_agent.py** needs the addition of the *num_agents* parameter to the **Agent** class, since the environment contained n instances of the virtual reacher "arm" that contributed to learning simultaneously via the two Actor and Critic agents, and the rest of modifications needed.
+
 Also reviewing comments in slack channels, the reform of the noise process due to the fact that is it possible that the OUNoise  implementation in the ddpg implementation of the pendulum is wrong https://drlnd.slack.com/messages/CBMG84E2Y/convo/CBMG84E2Y-1542647394.111400/
-**model.py** is the same as in the ddpg-pendulum example 
-Another improvement is to make target and local networks start off from the same set of weights as stated in https://drlnd.slack.com/messages/CBMG84E2Y/convo/C9KU4GN6S-1551201562.001200/
+
+**model.py** is the same as in the ddpg-pendulum example.
+
+Another improvement is to make target and local networks start off from the same set of weights as stated in https://drlnd.slack.com/messages/CBMG84E2Y/convo/C9KU4GN6S-1551201562.001200/.
 
 ### Hyper Parameters
 ```python
@@ -34,9 +40,9 @@ TAU is a parameter for a _soft update_ of the target and local models.
 ### Neural Network. Model Architecture & Parameters.
 DDPG algorithm needs four separate networks for both Actor and Critic and as in the Udacity examples we use a model with fully-connected linear layers and ReLu activations. 
 
-The **Actor** is a mapping of state to action values via 3 fully connected **Linear** layers with **relu** activation. The final output layer yields 4 action values with **tanh** activation. 
+The Actor is a mapping of state to action values via 3 fully connected Linear layers with relu activation. The final output layer yields 4 action values with tanh activation. 
 
-The **Critic** is a value function, measuring the quality of the actions via 3 fully connected **Linear** layers with **relu** activation with the third layer yielding the single output value.
+The Critic is a value function, measuring the quality of the actions via 3 fully connected Linear layers with relu activation with the third layer yielding the single output value.
 
 
 ### Plot of Rewards
