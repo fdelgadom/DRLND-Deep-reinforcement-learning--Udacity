@@ -2,66 +2,54 @@
 
 [image1]: ./descarga.png "Visualization"
 
-# Report: "Project 1 - Navigation"
+# Report: "Project 2 - Reacher Continuous Control"
 
-This project involves training a DeepRL agent to solve the Banana Unity Environment, a navigation problem.
+This project involves training a DeepRL agent to solve the Reacher Unity Environment, a continuos control problem.
 
 ## Deep-learning algorithm
+The learning algorithm implemented for this project is  **Deep Deterministic Policy Gradient(DDPG)** based on both the ddpg-bipedal and ddpg-pendulum examples in the [repository from Udacity](https://github.com/udacity/deep-reinforcement-learning).
+DDPG Algorithm is defined in the paper ["Continuous Control With Deep Reinforcement Learning"](https://arxiv.org/pdf/1509.02971.pdf)
+DDPG, as described in the paper consists in "adapt the ideas underlying the success of Deep Q-Learning to the continuous action domain" by using an actor-critic framework with a replay buffer
 
-The learning algorithm implemented for this project is a **Deep Q-Network (DQN)** based on the Deep Q Network Lunar Lander example in the [lesson from Udacity](https://github.com/udacity/deep-reinforcement-learning/blob/master/dqn/solution/dqn_agent.py).
-
-DQN Methods are defined in the paper ["Human-level control through deep reinforcement learning"](https://deepmind.com/research/publications/human-level-control-through-deep-reinforcement-learning/) 
+After trying to solve 1 agent version of the environment, and after consulting slack channels the consensus was that 20 agents are a far better option.
+So **ddpg_agent.py** needs the addition of the *num_agents* parameter to the **Agent** class, since the environment contained n instances of the virtual reacher "arm" that contributed to learning simultaneously via the two Actor and Critic agents, and the rest of modifications needed.
+Also reviewing comments in slack channels, the reform of the noise process due to the fact that is it possible that the OUNoise  implementation in the ddpg implementation of the pendulum is wrong https://drlnd.slack.com/messages/CBMG84E2Y/convo/CBMG84E2Y-1542647394.111400/
+**model.py** is the same as in the ddpg-pendulum example 
+Another improvement is to make target and local networks start off from the same set of weights as stated in https://drlnd.slack.com/messages/CBMG84E2Y/convo/C9KU4GN6S-1551201562.001200/
 
 ### Hyper Parameters
-
 ```python
 BUFFER_SIZE = int(1e5)  # replay buffer size
-BATCH_SIZE = 64         # minibatch size
+BATCH_SIZE = 128        # minibatch size
 GAMMA = 0.99            # discount factor
 TAU = 1e-3              # for soft update of target parameters
-LR = 5e-4               # learning rate 
-UPDATE_EVERY = 4        # how often to update the network
+LR_ACTOR = 1e-4         # learning rate of the actor 
+LR_CRITIC = 1e-3        # learning rate of the critic
+WEIGHT_DECAY = 0        # L2 weight decay
 ```
-The BATCH_SIZE and BUFFER_SIZE are parameters for the ReplayBuffer class, an "memory" randomly sampled at each step to obtain _experiences_ passed into the learn method with a discount of GAMMA.
-
-LEARNING_RATE is a parameter to the Adam optimizer. 
-
+The BATCH_SIZE and BUFFER_SIZE are parameters for the ReplayBuffer class, an "memory" randomly sampled at each step to obtain _experiences_ passed into the learn method with a discount of GAMMA. 
+LEARNING_RATE for actor and critic is a parameter to the Adam optimizer and also WEIGHT_DECAY
 TAU is a parameter for a _soft update_ of the target and local models. 
 
-UPDATE_EVERY determines the number of steps before learning from a new sample.
+### Neural Network. Model Architecture & Parameters.
+DDPG algorithm needs four separate networks for both Actor and Critic and as in the Udacity examples we use a model with fully-connected linear layers and ReLu activations. 
 
-### Neural Network. Model Architecture & Parameters
+The **Actor** is a mapping of state to action values via 3 fully connected **Linear** layers with **relu** activation. The final output layer yields 4 action values with **tanh** activation. 
 
-The Deep Q-Learning algorithm uses two separate networks with identical model architectures.
-
-As in the Udacity exercise we use a model with fully-connected linear layers and ReLu activations. 
-The fully-connected layers are the mapping of state to action values with relu activation and dropout to prevent overfitting. 
-The input layer is a fully-connected linear layer with 37 inputs (features). These inputs are the 37 signals that define the status of our environment.  
-The final output layer is a fully-connected linear layer with a single output for each valid action, in our environment 4 outputs (features) The action selection is made via argmax and using Epsilon-greedy	logic to allow random exploration.
-
-Model:
-
-+ (fc1): Linear(in_features=37, out_features=64, bias=True)
-+ (fc2): Linear(in_features=64, out_features=64, bias=True)
-+ (fc3): Linear(in_features=64, out_features=4, bias=True)
+The **Critic** is a value function, measuring the quality of the actions via 3 fully connected **Linear** layers with **relu** activation with the third layer yielding the single output value.
 
 
 ### Plot of Rewards
 
 ![alt text][image1]
 
-Environment solved in 374 episodes.
-
+Environment solved in n episodes.
 
 ## Ideas for Future Work
 
-Future ideas for improving the agent's performance.
-1. Implement Double DQN, as described by van Hasselt et al in [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/abs/1509.06461), "can decouple the selection from the evaluation" by using [Double Q-learning](http://papers.nips.cc/paper/3964-double-q-learning.pdf) in a deep learning network context.
-2. Try other new improvements to the original Deep Q-Learning algorithm:
-    1. Prioritized Experience Replay
-    2. Dueling DQN
-    3. Learning from multi-step bootstrap targets (A3C)
-    4. Distributional DQN
-    5. Noisy DQN
+.- Try new algorithms like PPO, A3C, and D4PG that use multiple (non-interacting, parallel) copies of the same agent to distribute the task of gathering experience
+.- Explore the sensitivity of the hyperparameters and the architecture (particularly the depth) of the Actor and Critic models.
+.- Noise process configuration
 
-Researchers at Google DeepMind have been testing the performance of an agent that incorporated all these modifications in the Rainbow paper [Rainbow: Combining Improvements in Deep Reinforcement Learning ](https://arxiv.org/pdf/1710.02298.pdf)
+
+
