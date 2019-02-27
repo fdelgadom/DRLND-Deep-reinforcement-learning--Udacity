@@ -4,7 +4,7 @@
 
 # Report: "Project 2 - Reacher Continuous Control"
 
-This project involves training a DeepRL agent to solve the Reacher Unity Environment, a continuos control problem.
+This project involves training a DeepRL agent to solve the Reacher Unity Environment, a continuous control problem.
 
 ## Deep-learning algorithm
 The learning algorithm implemented for this project is  **Deep Deterministic Policy Gradient(DDPG)** based on both the ddpg-bipedal and ddpg-pendulum examples in the [repository from Udacity](https://github.com/udacity/deep-reinforcement-learning).
