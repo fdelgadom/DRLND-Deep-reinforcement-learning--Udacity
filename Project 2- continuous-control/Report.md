@@ -47,9 +47,11 @@ Environment solved in n episodes.
 
 ## Ideas for Future Work
 
-.- Try new algorithms like PPO, A3C, and D4PG that use multiple (non-interacting, parallel) copies of the same agent to distribute the task of gathering experience
-.- Explore the sensitivity of the hyperparameters and the architecture (particularly the depth) of the Actor and Critic models.
-.- Noise process configuration
+1.- Try new algorithms like PPO, A3C, and D4PG that use multiple (non-interacting, parallel) copies of the same agent to distribute the task of gathering experience.
+
+2.- Explore the sensitivity of the hyperparameters and the architecture (particularly the depth) of the Actor and Critic models.
+
+3.- Noise process configuration
 
 
 
