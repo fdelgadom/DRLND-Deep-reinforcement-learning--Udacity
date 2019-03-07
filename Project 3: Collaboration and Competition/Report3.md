@@ -62,7 +62,8 @@ WEIGHT_DECAY = 0        # L2 weight decay
 ```
 The BATCH_SIZE and BUFFER_SIZE are parameters for the ReplayBuffer class, an "memory" randomly sampled at each step to obtain _experiences_ passed into the learn method with a discount of GAMMA.
 
-LEARNING_RATE for actor and critic is a parameter to the Adam optimizer and also WEIGHT_DECAY
+LEARNING_RATE for actor and critic is a parameter to the Adam optimizer and also WEIGHT_DECAY.
+
 TAU is a parameter for a _soft update_ of the target and local models. 
 
 ### Neural Network. Model Architecture & Parameters.
