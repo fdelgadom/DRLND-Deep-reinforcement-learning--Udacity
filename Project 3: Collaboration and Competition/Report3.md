@@ -79,7 +79,7 @@ The **Critic** is a value function, measuring the quality of the actions via 3 f
 
 ![alt text][image2]
 
-Environment solved in nnnn episodes. Average Score: nnn
+Environment solved in 461 episodes. Average Score: 0.501
 
 ## Ideas for Future Work
 
